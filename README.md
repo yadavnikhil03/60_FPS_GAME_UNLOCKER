@@ -19,7 +19,7 @@ Welcome to **60_FPS_GAME_UNLOCKER**! 🚀 This is not just a module; it’s your
 
 ## ⚙️ Installation Guide
 
-1. **Download the latest release ZIP** from the [releases section](https://github.com/yadavnikhil03/60_FPS_GAME_UNLOCKER/releases/tag/Module).
+1. **Download the latest release ZIP** from the [releases](https://github.com/yadavnikhil03/60_FPS_GAME_UNLOCKER/releases/tag/Module).
 2. **Flash** the module using Magisk or a KSU app. 
 3. **Reboot** your device and get ready to play!
 4. **Launch BGMI or PUBG** and watch the magic happen with 60 FPS/Extreme options enabled! 🌟
