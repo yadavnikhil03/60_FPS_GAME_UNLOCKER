@@ -13,6 +13,10 @@ Welcome to **60_FPS_GAME_UNLOCKER**! 🚀 This is not just a module; it’s your
 - **Optimized for Low-End Devices**: Designed to make every frame count, even on budget hardware. 💪
 - **Seamless Installation**: Flash it through Magisk or KSU – it’s that easy! 🔧
 
+## 📸 See It in Action!
+
+<img src="![photo_2024-10-22_05-10-01](https://github.com/user-attachments/assets/0a135019-707d-4bbf-9b56-34daf5318eb5)" alt="60 FPS Unlocked" width="600" height="auto" />
+
 ## ⚙️ Installation Guide
 
 1. **Download the latest release ZIP** from the [releases section](https://github.com/yadavnikhil03/60_FPS_GAME_UNLOCKER/releases/tag/Module).
