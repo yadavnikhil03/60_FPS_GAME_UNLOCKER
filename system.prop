@@ -1,0 +1,149 @@
+# This file is intended for use with resetprop
+# Example: Modify the DPI setting
+# ro.sf.lcd_density=420
+
+# Device Identification
+ro.product.model=M2006J10C
+
+# Advanced System Tweaks
+persist.sys.use_dithering=1
+
+# System Performance Enhancements
+ro.HOME_APP_ADJ=1
+debug.performance.tuning=1
+persist.sys.ui.hw=1
+persist.sys.purgeable_assets=1
+persist.sys.use_dithering=0
+ro.mot.eri.losalert.delay=1000
+ro.config.hw_fast_dormancy=1
+ro.config.hw_quickpoweron=true
+
+# Gaming Performance Optimization
+ro.FOREGROUND_APP_ADJ=0
+ro.VISIBLE_APP_ADJ=1
+ro.SECONDARY_SERVER_ADJ=2
+ro.HIDDEN_APP_MIN_ADJ=4
+ro.CONTENT_PROVIDER_ADJ=9
+ro.EMPTY_APP_ADJ=15
+
+# Graphics Rendering Optimization
+debug.gr.numframebuffers=3
+ro.min_pointer_dur=1
+
+# Frame Rate Control
+persist.sys.NV_FPSLIMIT=60
+persist.sys.NV_POWERMODE=1
+persist.sys.NV_PROFVER=15
+persist.sys.NV_STEREOCTRL=0
+persist.sys.NV_STEREOSEPCHG=0
+persist.sys.NV_STEREOSEP=20
+
+# Frame Rate Stabilization
+debug.sf.showupdates=0
+debug.sf.showcpu=0
+debug.sf.showbackground=0
+debug.sf.showfps=0
+
+# Gaming Frame Rate Control
+ro.fps_enable=0
+gpu.fps=auto
+cpu.fps=auto
+ro.fps.capsmax=60fps
+ro.fps.capsmin=60fps
+
+# Frame Rate Optimization
+vendor.debug.egl.swapinterval=1
+persist.sys.egl.swapinterval=1
+debug.gr.swapinterval=1
+vendor.debug.gr.swapinterval=1
+persist.sys.debug.gr.swapinterval=1
+
+# System Properties
+cpu.fps=auto
+gpu.fps=auto
+
+# Qualcomm Display Settings (For Qualcomm devices ONLY!!)
+com.qc.hardware=1
+debug.qc.hardware=true
+debug.qctwa.preservebuf=1
+debug.qctwa.statusbar=1
+
+# Enable Qualcomm tile rendering (Hardware Rendering)
+debug.enabletr=1
+persist.sys.composition.type=gpu 
+rs.gpu.renderscript=0
+
+# Video Streaming Optimization
+media.stagefright.enable-player=true
+media.stagefright.enable-http=true
+media.stagefright.enable-aac=true
+media.stagefright.enable-qcp=true
+media.stagefright.enable-fma2dp=true
+media.stagefright.enable-scan=true
+media.stagefright.enable-meta=true
+media.stagefright.enable-rtsp=true
+media.stagefright.enable-record=true
+
+# Graphics Enhancement
+video.accelerate.hw=1
+ro.media.dec.jpeg.memcap=8000000
+ro.media.enc.hprof.vid.bps=8000000
+ro.media.enc.jpeg.quality=100
+ro.media.dec.aud.wma.enabled=1
+ro.media.dec.vid.wmv.enabled=1
+
+# GPU Optimizations for Better FPS
+video.accelerate.hw=1
+hwui.disable_vsync=true
+hwui.render_dirty_regions=false
+ro.config.enable.hw_accel=true
+debug.composition.type=gpu
+debug.performance.tuning=1
+persist.sys.ui.hw=1
+
+# Force GPU Hardware Acceleration
+debug.hwui.render_dirty_regions=false
+debug.hwui.show_dirty_regions=false
+ro.fb.mode=1
+ro.sf.compbypass.enable=0
+
+# Performance Tweaks
+dalvik.vm.verify-bytecode=false
+dalvik.vm.execution-mode=int:jit
+dalvik.vm.heapstartsize=16m
+dalvik.vm.heapgrowthlimit=128m
+dalvik.vm.heapsize=256m  # Default for devices with less than 4GB RAM
+
+# Dynamic Memory Adjustment
+if [ "$(grep MemTotal /proc/meminfo | awk '{print $2}')" -gt 4000000 ]; then
+  # Device with more than 4GB RAM
+  dalvik.vm.heapsize=512m
+fi
+
+# Device-specific GPU optimizations (Snapdragon, Exynos, MediaTek)
+ro.product.gpu.driver=Adreno  # For Snapdragon
+# ro.product.gpu.driver=Mali    # For Exynos
+# ro.product.gpu.driver=PowerVR # For MediaTek (Use PowerVR, Mali, or others based on the chipset)
+
+# Additional GPU Tweaks
+debug.composition.type=c2d
+hw3d.force=1
+persist.sys.dalvik.multithread=true
+
+# MediaTek-Specific Optimizations
+ro.mediatek.platform=MTK
+persist.sys.thermal.policy=performance   # Disable aggressive thermal throttling
+persist.service.acm.enable=0             # Disable modem logging
+persist.radio.multisim.config=dsds       # Dual SIM optimization for better power management
+persist.power.useautobrightadj=1         # Use auto-brightness adjustment for power saving
+
+# MediaTek Power Efficiency Tweaks
+ro.mtk_perf_fast_response=1              # Fast response to heavy loads
+ro.mtk_perf_monitor.enable=1             # Enable performance monitor
+ro.mtk_pq=1                              # Enable MediaTek picture quality enhancements
+persist.sys.pq.adl=1                     # Enable Adaptive Display Level for power-saving
+
+# MediaTek GPU Enhancements
+debug.mtk.gpu.dfps_limit=60              # Force 60fps for gaming
+ro.mtk.hardware=true
+ro.mtk_gpu_driver=PowerVR                
