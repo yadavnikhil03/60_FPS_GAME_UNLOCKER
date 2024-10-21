@@ -23,7 +23,7 @@ This module not only spoofs the frame rate but also enables smoother gameplay, m
 
 ### Note
 
-This module is a **gift to gamers by gamers**. Enjoy your gaming experience with improved graphics and performance!
+This module is a **gift to gamers by gamer**. Enjoy your gaming experience with improved graphics and performance!
 
 ## License
 
