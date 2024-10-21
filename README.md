@@ -15,7 +15,7 @@ Welcome to **60_FPS_GAME_UNLOCKER**! 🚀 This is not just a module; it’s your
 
 ## 📸 See It in Action!
 
-<img src="![photo_2024-10-22_05-10-01](https://github.com/user-attachments/assets/0a135019-707d-4bbf-9b56-34daf5318eb5)" alt="60 FPS Unlocked" width="600" height="auto" />
+(![photo_2024-10-22_05-10-01](https://github.com/user-attachments/assets/0a135019-707d-4bbf-9b56-34daf5318eb5))
 
 ## ⚙️ Installation Guide
 
