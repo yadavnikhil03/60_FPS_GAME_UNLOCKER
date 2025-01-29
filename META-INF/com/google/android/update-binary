@@ -1,5 +1,6 @@
 #!/sbin/sh
 
+<<<<<<< HEAD
 ######
 # INIT
 ######
@@ -19,10 +20,34 @@ ui_print() { echo "$1"; }
 require_new_magisk() {
   ui_print "*******************************"
   ui_print " Please install Magisk v20.0+! "
+=======
+#################
+# Initialization
+#################
+
+umask 022
+
+# Global variables
+TMPDIR=/dev/tmp
+PERSISTDIR=/sbin/.magisk/mirror/persist
+
+# Cleanup and setup temporary directory
+rm -rf "$TMPDIR" 2>/dev/null
+mkdir -p "$TMPDIR"
+
+# Define ui_print function for output
+ui_print() { echo "$1"; }
+
+# Function to require a minimum Magisk version
+require_new_magisk() {
+  ui_print "*******************************"
+  ui_print " Please install Magisk v19.0+! "
+>>>>>>> 5bbc55447f3f322bc59bd3c98deccd89a4adbc5f
   ui_print "*******************************"
   exit 1
 }
 
+<<<<<<< HEAD
 is_setup_script() {
   unzip -l "$ZIPFILE" setup.sh | grep -q setup.sh
   return $?
@@ -31,6 +56,28 @@ is_setup_script() {
 ####################
 # SETUP ENVIRONMENT
 ####################
+=======
+# Check if the script is a legacy script
+is_legacy_script() {
+  unzip -l "$ZIPFILE" install.sh | grep -q install.sh
+}
+
+# Print module name
+print_modname() {
+  local len=${#MODNAME}
+  local pounds=$(printf "%$((len + 2))s" | tr ' ' '*')
+  ui_print "$pounds"
+  ui_print " $MODNAME "
+  ui_print "$pounds"
+  ui_print "*******************"
+  ui_print " Powered by Magisk "
+  ui_print "*******************"
+}
+
+##############
+# Environment
+##############
+>>>>>>> 5bbc55447f3f322bc59bd3c98deccd89a4adbc5f
 
 OUTFD=$2
 ZIPFILE=$3
@@ -38,6 +85,7 @@ ZIPFILE=$3
 mount /data 2>/dev/null
 
 # Load utility functions
+<<<<<<< HEAD
 if [ -f /data/adb/magisk/util_functions.sh ]; then
   . /data/adb/magisk/util_functions.sh
   NVBASE=/data/adb
@@ -154,16 +202,98 @@ set_permissions
 else
 ui_print "▌ Module setup script not found, exiting installation..."
 exit 1
+=======
+[ -f /data/adb/magisk/util_functions.sh ] || require_new_magisk
+. /data/adb/magisk/util_functions.sh
+[ $MAGISK_VER_CODE -gt 18100 ] || require_new_magisk
+
+# Preparation for flashable zips
+setup_flashable
+mount_partitions
+api_level_arch_detect
+
+# Setup busybox and binaries
+$BOOTMODE && boot_actions || recovery_actions
+
+##############
+# Preparation
+##############
+
+# Extract prop file
+unzip -o "$ZIPFILE" module.prop -d "$TMPDIR" >&2
+[ ! -f "$TMPDIR/module.prop" ] && abort "! Unable to extract zip file!"
+
+MODDIRNAME=$([ "$BOOTMODE" = true ] && echo "modules_update" || echo "modules")
+MODULEROOT=$NVBASE/$MODDIRNAME
+MODID=$(grep_prop id "$TMPDIR/module.prop")
+MODPATH=$MODULEROOT/$MODID
+MODNAME=$(grep_prop name "$TMPDIR/module.prop")
+
+# Create module path
+rm -rf "$MODPATH" 2>/dev/null
+mkdir -p "$MODPATH"
+
+##########
+# Install
+##########
+
+if is_legacy_script; then
+  unzip -oj "$ZIPFILE" module.prop install.sh uninstall.sh 'common/*' -d "$TMPDIR" >&2
+
+  # Load install script and run callbacks
+  . "$TMPDIR/install.sh"
+  print_modname
+  on_install
+
+  # Custom uninstaller
+  [ -f "$TMPDIR/uninstall.sh" ] && cp -af "$TMPDIR/uninstall.sh" "$MODPATH/uninstall.sh"
+
+  # Skip mount if needed
+  $SKIPMOUNT && touch "$MODPATH/skip_mount"
+
+  # Copy prop file if needed
+  $PROPFILE && cp -af "$TMPDIR/system.prop" "$MODPATH/system.prop"
+
+  # Copy module info
+  cp -af "$TMPDIR/module.prop" "$MODPATH/module.prop"
+
+  # Copy scripts if needed
+  $POSTFSDATA && cp -af "$TMPDIR/post-fs-data.sh" "$MODPATH/post-fs-data.sh"
+  $LATESTARTSERVICE && cp -af "$TMPDIR/service.sh" "$MODPATH/service.sh"
+
+  ui_print "- Setting permissions"
+  set_permissions
+else
+  print_modname
+
+  unzip -o "$ZIPFILE" customize.sh -d "$MODPATH" >&2
+
+  # Skip extraction if SKIPUNZIP is set
+  if ! grep -q '^SKIPUNZIP=1$' "$MODPATH/customize.sh" 2>/dev/null; then
+    ui_print "- Extracting module files"
+    unzip -o "$ZIPFILE" -x 'META-INF/*' -d "$MODPATH" >&2
+    set_perm_recursive "$MODPATH" 0 0 0755 0644  # Default permissions
+  fi
+
+  # Load customization script if it exists
+  [ -f "$MODPATH/customize.sh" ] && . "$MODPATH/customize.sh"
+>>>>>>> 5bbc55447f3f322bc59bd3c98deccd89a4adbc5f
 fi
 
 # Handle replace folders
 for TARGET in $REPLACE; do
+<<<<<<< HEAD
   ui_print "▌ Replace target: $TARGET"
   mktouch $MODPATH$TARGET/.replace
+=======
+  ui_print "- Replace target: $TARGET"
+  mktouch "$MODPATH$TARGET/.replace"
+>>>>>>> 5bbc55447f3f322bc59bd3c98deccd89a4adbc5f
 done
 
 if $BOOTMODE; then
   # Update info for Magisk Manager
+<<<<<<< HEAD
   mktouch $NVBASE/modules/$MODID/update
   cp -af $MODPATH/module.prop $NVBASE/modules/$MODID/module.prop
 fi
@@ -178,16 +308,41 @@ fi
 
 # Remove stuffs that don't belong to modules
 rm -rf $MODPATH/LICENSE
+=======
+  mktouch "$NVBASE/modules/$MODID/update"
+  cp -af "$MODPATH/module.prop" "$NVBASE/modules/$MODID/module.prop"
+fi
+
+# Copy custom sepolicy rules if they exist
+if [ -f "$MODPATH/sepolicy.rule" ] && [ -e "$PERSISTDIR" ]; then
+  ui_print "- Installing custom sepolicy patch"
+  PERSISTMOD="$PERSISTDIR/magisk/$MODID"
+  mkdir -p "$PERSISTMOD"
+  cp -af "$MODPATH/sepolicy.rule" "$PERSISTMOD/sepolicy.rule"
+fi
+
+# Cleanup unnecessary files
+rm -rf \
+"$MODPATH/system/placeholder" "$MODPATH/customize.sh" \
+"$MODPATH/README.md" "$MODPATH/.git*" 2>/dev/null
+>>>>>>> 5bbc55447f3f322bc59bd3c98deccd89a4adbc5f
 
 ##############
 # Finalizing
 ##############
 
 cd /
+<<<<<<< HEAD
 if ! $BOOTMODE; then
 recovery_cleanup
 fi
 rm -rf $TMPDIR
 
 ui_print "▌ Done"
+=======
+$BOOTMODE || recovery_cleanup
+rm -rf "$TMPDIR"
+
+ui_print "- Done"
+>>>>>>> 5bbc55447f3f322bc59bd3c98deccd89a4adbc5f
 exit 0
